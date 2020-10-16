@@ -2,7 +2,12 @@ const Strava = require('strava-v3');
 const keys = require("./keys");
 const { createCanvas } = require('canvas')
 
-export async function getDistance(token) {
+export async function getStravaImg(state) {
+
+    if (!state.user || !state.user.token) {
+        return null
+    }
+
     Strava.config({
         "access_token"  : keys.strava.access_token,
         "client_id"     : keys.strava.clientID,
@@ -17,17 +22,15 @@ export async function getDistance(token) {
     var runs = 0
     var gain = 0
     while (loop) {
-        const payload = await Strava.athlete.listActivities({'access_token':token, page: page});
+        const payload = await Strava.athlete.listActivities({'access_token':state.user.token, page: page});
         page ++
         for (const activity of payload) {
             if (activity.start_date_local.slice(0,4) === "2020") {
-                if (activity.type === "Run") {
+                if (activity.type === state.controls.type) {
                     distance += activity.distance
                     time += activity.moving_time
                     gain += activity.total_elevation_gain
                     runs ++
-                } else {
-                    console.log(activity.type)
                 }
             } else {
                 loop = false
@@ -46,11 +49,25 @@ export async function getDistance(token) {
     context.font = 'bold 30pt Roboto'
     context.textAlign = 'left'
     context.fillStyle = '#fff'
-    context.fillText('Running', 50, 100)
+    
+    var title
+    switch(state.controls.type) {
+        case 'Ride':
+            title = 'Cycling';
+            break;
+        case 'Swim':
+            title = 'Swimming';
+            break;
+        default:
+            title = 'Running';
+    }
+
+
+    context.fillText(title, 50, 100)
     context.fillText('Distance', 50, 250)
     context.fillText('Time', 50, 400)
     context.fillText('Elev Gain', 50, 550)
-    context.fillText('Runs', 50, 700)
+    context.fillText(state.controls.type + 's', 50, 700)
 
     context.textAlign = 'right'
     context.fillText((distance/1000).toFixed(1) + 'km', 490, 250)
