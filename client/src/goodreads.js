@@ -1,7 +1,11 @@
-const goodreads = require('goodreads-api-node');
+import { getImgFromURL } from "./utilities.js"
 const { createCanvas } = require('canvas')
 
 export async function getGoodreadsImage(state) {      
+    if (!state.user) {
+        return null
+    }
+
     const width = 540
     const height = 960
     
@@ -16,13 +20,18 @@ export async function getGoodreadsImage(state) {
     context.fillText('Audiobooks', 50, 250)
     context.fillText('Paper', 50, 400)
     context.fillText('Pages', 50, 550)
+    context.fillText('Favourite', 50, 700)
     
     context.textAlign = 'right'
-    context.fillText(state.audiobooks, 490, 250)
-    context.fillText(state.books - state.audiobooks, 490, 400)
-    context.fillText(state.pages, 490, 550)
+    context.fillText(state.user.audiobooks, 490, 250)
+    context.fillText(state.user.books.length - state.user.audiobooks, 490, 400)
+    context.fillText(state.user.pages, 490, 550)
+    context.fillText(state.user.books[state.controls.favBook].slice(0,10), 490, 700)
+
+    let fav = await getImgFromURL(state.user.imgs[state.controls.favBook])
+    context.drawImage(fav, 290, 650, 200, fav.naturalHeight*200/fav.naturalWidth)
     
     var img = canvas.toDataURL()
 
-    return img
+    return [img]
 }
