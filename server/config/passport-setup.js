@@ -2,6 +2,7 @@ const passport = require("passport");
 const request = require("request");
 const StravaStrategy = require('passport-strava-oauth2').Strategy;
 const GoodreadsStrategy = require('passport-goodreads').Strategy;
+const SpotifyStrategy = require('passport-spotify').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const keys = require("./keys");
 const fetch = require('node-fetch');
@@ -107,8 +108,8 @@ passport.use(
         url: ' https://my.bible.com/sign-in',
         form: 
         {
-          username: 'isaac.hunter.c@gmail.com',
-          password: 'M$@pt8Xd$jKiF@$' } 
+          username: username,
+          password: password } 
       };
 
       request(options, function (error, response, body) {
@@ -141,5 +142,26 @@ passport.use(
 
       });
     })
+  })
+);
+
+passport.use(
+  new SpotifyStrategy({
+    clientID: keys.spotify.clientID,
+    clientSecret: keys.spotify.clientSecret,
+    callbackURL: "/auth/spotify/redirect",
+    passReqToCallback: true
+  }, function(req, accessToken, refreshToken, profile, done) {
+    var user = {}
+    if (req.user) {
+      user = req.user
+    } else {
+      console.log("break")
+    }
+    user.spotify = {
+      token: accessToken,
+      provider: "spotify"
+    }
+    return done(null, user);
   })
 );

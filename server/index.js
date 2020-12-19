@@ -5,7 +5,14 @@ const port = 4000;
 const passport = require("passport");
 const passportSetup = require("./config/passport-setup");
 const session = require("express-session");
+
 const authRoutes = require("./routes/auth-routes");
+const stravaRoutes = require("./routes/strava-routes");
+const goodreadsRoutes = require("./routes/goodreads-routes");
+const youversionRoutes = require("./routes/youversion-routes");
+const spotifyRoutes = require("./routes/spotify-routes");
+const netflixRoutes = require("./routes/netflix-routes");
+
 // const mongoose = require("mongoose");
 const keys = require("./config/keys");
 const cors = require("cors");
@@ -45,8 +52,14 @@ app.use(
   })
 );
 
+app.use('/images', express.static('images'))
 // set up routes
 app.use("/auth", authRoutes);
+app.use("/auth/strava", stravaRoutes);
+app.use("/auth/goodreads", goodreadsRoutes);
+app.use("/auth/youversion", youversionRoutes);
+app.use("/auth/spotify", spotifyRoutes);
+app.use("/auth/netflix", netflixRoutes);
 
 // connect react to nodejs express server
 app.listen(port, () => console.log(`Server is running on port ${port}!`));

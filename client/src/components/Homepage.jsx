@@ -11,6 +11,7 @@ export default class HomePage extends Component {
   state = {
     strava: {
       title: "Strava",
+      enabled: true,
       name: "strava",
       img: "strava.png",
       controls: {
@@ -19,6 +20,7 @@ export default class HomePage extends Component {
     },
     goodreads: {
       title: "Goodreads",
+      enabled: true,
       name: "goodreads",
       img: "goodreads.jpg",
       controls: {
@@ -27,24 +29,43 @@ export default class HomePage extends Component {
     },
     applemusic: {
       title: "Apple Music",
+      enabled: false,
       name: "applemusic",
-      img: "apple-music.png",
+      img: "apple-music-disabled.png",
       controls: {
         type:"Music"
       } 
     },
     applepodcasts: {
       title: "Apple Podcasts",
+      enabled: false,
       name: "applepodcasts",
-      img: "apple-podcasts.jpg",
+      img: "apple-podcasts-disabled.png",
       controls: {
         type:"Music"
       } 
     },
     youversion: {
       title: "Youversion Bible",
+      enabled: false,
       name: "youversion",
-      img: "youversion.png",
+      img: "youversion-disabled.png",
+      controls: {
+      }
+    },
+    // spotify: {
+    //   title: "Spotify",
+    //   enabled: false,
+    //   name: "spotify",
+    //   img: "spotify.jpg",
+    //   controls: {
+    //   }
+    // },
+    netflix: {
+      title: "Netflix",
+      enabled: false,
+      name: "netflix",
+      img: "netflix-disabled.png",
       controls: {
       }
     }
@@ -159,6 +180,7 @@ export default class HomePage extends Component {
           <section className="jumbotron text-center">
             <div className="container">
               <h1>Year In Review</h1>
+              <p>Hey! I'm <a href="http://instagram.com/isaachunter" target="_blank">Isaac</a>. This is a rough tool I threw together over a couple weekends so there are most likely bugs &amp; issues. Feel free to DM me any graphics that have an issue and I'll try my best to fix the algorithm. Also every time you connect an app or refresh the page, the server has to re-calculate all your stats so I would suggest connecting all your apps and then go pour yourself a coffee and hopefully it will be done calculating when you get back. :P Enjoy!</p>
             </div>
           </section>
           <div className="album py-5 bg-light">
@@ -185,7 +207,7 @@ export default class HomePage extends Component {
 
                 {goodreads.authenticated && 
                   <Item state={goodreads} getImg={state => getGoodreadsImage(state)}>
-                    {goodreads.user && goodreads.user.books &&
+                    {/* {goodreads.user && goodreads.user.books &&
                       <li className="list-group-item">
                         <div className="input-group">
                           <div className="input-group-prepend">
@@ -198,7 +220,7 @@ export default class HomePage extends Component {
                           </select>
                         </div>
                       </li>
-                    }
+                    } */}
                   </Item>
                 }
                 <div className="col-sm">
@@ -207,7 +229,7 @@ export default class HomePage extends Component {
                     <div className="card-body app-chooser">
                       {Object.keys(this.state).map(function(key, index) {
                         return(
-                          <AppButton key={key} name={key} img={this.state[key].img} />
+                          <AppButton key={key} name={key} enabled={this.state[key].enabled} img={this.state[key].img} />
                         )
                       }.bind(this))}
                     </div>
@@ -236,8 +258,15 @@ class AppButton extends React.Component {
   };
 
   render() { 
+    if (this.props.enabled) {
+      return (
+        <div className="app" onClick={e => this._handleConnectClick(this.props.name)}>
+          <img className="img-fluid" alt={this.props.name + " logo"} src={require("./../images/"+this.props.img)} />
+        </div>
+      )
+    }
     return (
-      <div className="app" onClick={e => this._handleConnectClick(this.props.name)}>
+      <div className="app disabled">
         <img className="img-fluid" alt={this.props.name + " logo"} src={require("./../images/"+this.props.img)} />
       </div>
     )

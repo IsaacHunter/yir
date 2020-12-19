@@ -54,6 +54,10 @@ footer p {
   cursor: pointer;
 }
 
+.app-chooser .app.disabled {
+  cursor: auto;
+}
+
 .scrubber {
   margin: 0 -3px;
 }
