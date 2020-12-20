@@ -2,7 +2,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const Netflix = require('netflix2')
 const { netflix } = require("../config/keys");
-const CLIENT_HOME_PAGE_URL = "http://localhost:3000";
+const CLIENT_HOME_PAGE_URL = "http://myyearinreview.com";
 const util = require('util');
 
 // Promisify the netflix2 API so that it doesn't follow the

@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 const keys = require("../config/keys");
-const CLIENT_HOME_PAGE_URL = "http://localhost:3000";
+const CLIENT_HOME_PAGE_URL = "http://myyearinreview.com";
 const Strava = require('strava-v3');
 const ObjectsToCsv = require('objects-to-csv');
 const fs = require('fs');
@@ -110,7 +110,7 @@ router.get("/data", async (req, res) => {
                 ...activ.photos,
                 activity_id: activ.id,
                 kudos_count: activ.kudos_count,
-                url: 'http://localhost:4000/images/photo'+activ.id+'.jpg'
+                url: 'http://myyearinreview:4000/images/photo'+activ.id+'.jpg'
               })
             }
             if (activ.best_efforts) {
@@ -155,7 +155,7 @@ router.get("/data", async (req, res) => {
       .buffer(true).disableTLSCerts()
       
       await writeFileAsync('images/'+maxKudos.id+'.png',imgRes.body)
-      maxKudos.img = 'http://localhost:4000/images/'+maxKudos.id+'.png'
+      maxKudos.img = 'http://myyearinreview:4000/images/'+maxKudos.id+'.png'
       maxKudos.name = activ.name
     // }
 
