@@ -103,7 +103,7 @@ export default class HomePage extends Component {
     // Fetch does not send cookies. So you should add credentials: 'include'
     for (var key in this.state) {
       const thekey = key
-      fetch("http://localhost:4000/auth/"+thekey+"/success", {
+      fetch("http://myyearinreview.com:4000/auth/"+thekey+"/success", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -120,7 +120,7 @@ export default class HomePage extends Component {
               authenticated: 1
             }
           });
-          fetch("http://localhost:4000/auth/"+thekey+"/data", {
+          fetch("http://myyearinreview.com:4000/auth/"+thekey+"/data", {
             method: "GET",
             credentials: "include",
             headers: {
@@ -252,7 +252,7 @@ class AppButton extends React.Component {
       // } else {
         // Authenticate using via passport api in the backend
         // Upon successful login, a cookie session will be stored in the client
-        window.open("http://localhost:4000/auth/" + key, "_self");
+        window.open("http://myyearinreview.com:4000/auth/" + key, "_self");
       // }
     }
   };
@@ -318,7 +318,7 @@ class Item extends React.Component {
   _handleDisconnectClick = (event) => {
     if (event.target.value) {
       // Logout using passport api
-      window.open("http://localhost:4000/auth/" + event.target.value + "/logout", "_self");
+      window.open("http://myyearinreview.com:4000/auth/" + event.target.value + "/logout", "_self");
     }
   };
 
