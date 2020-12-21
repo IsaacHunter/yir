@@ -2,7 +2,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const keys = require("../config/keys");
 const CLIENT_HOME_PAGE_URL = "http://myyearinreview.com";
-const goodreads = require('goodreads-api-node');
+const goodreads = require('../goodreads-api-node');
 const request = require("request")
 const fs = require('fs');
 
