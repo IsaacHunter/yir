@@ -192,23 +192,24 @@ export async function getListImage(details) {
     if (details.title) {
         context.fillText(details.title, 200, 460)
     }
+    var yOffset = (5 - details.list.length)*25
     for (var i in details.list) {
         if (details.list[i].img) {
             let img = await getImgFromURL(details.list[i].img)
             var scale = Math.min(170 / img.width, 170 / img.height)
             context.fillStyle = details.colors.primaryLight
-            context.fillRect(200, 500 + 225*i, img.width*scale, img.height*scale);
-            context.drawImage(img, 218, 518 + 225*i, img.width*scale, img.height*scale)
+            context.fillRect(200, yOffset + 500 + 225*i, img.width*scale, img.height*scale);
+            context.drawImage(img, 218, yOffset + 518 + 225*i, img.width*scale, img.height*scale)
             maxWidth = Math.max(img.width*scale, maxWidth)
         } else if (details.list[i].thumbtext) {
             context.font = 'bold 50px Futura'
             context.fillStyle = "#fff"
             if (details.list[i].thumbtext != "Half-Marathon") {
-                context.fillText(details.list[i].thumbtext, 200, 640 + 225*i)
+                context.fillText(details.list[i].thumbtext, 200, yOffset + 640 + 225*i)
                 maxWidth = Math.max(context.measureText(details.list[i].thumbtext).width, maxWidth)
             } else {
-                context.fillText("Half-", 200, 580 + 225*i)
-                context.fillText("Marathon", 200, 640 + 225*i)
+                context.fillText("Half-", 200, yOffset + 580 + 225*i)
+                context.fillText("Marathon", 200, yOffset + 640 + 225*i)
                 maxWidth = Math.max(context.measureText("Marathon").width, maxWidth)
             }
         }
@@ -217,7 +218,7 @@ export async function getListImage(details) {
     for (var i in details.list) {
         for (var j in details.list[i].titles) {
             context.fillStyle = details.list[i].titles[j].color
-            context.fillText(details.list[i].titles[j].text, 280 + maxWidth, 550 + 225*i + 40*j + (170-(details.list[i].titles.length*40))/2)
+            context.fillText(details.list[i].titles[j].text, 280 + maxWidth, yOffset + 550 + 225*i + 40*j + (170-(details.list[i].titles.length*40))/2)
         }
     }
 
@@ -276,6 +277,10 @@ export async function getDetailImage(details) {
     }
 
     if (details.strava) {
+        if (details.photos.length == 0) {
+            context.translate(0, 230);
+            context.fillStyle = details.colors.primary
+        }
         context.textAlign = 'left'
         context.fillText(nicestr(details.kudos) + ((details.kudos == 1) ? ' kudo' : ' kudos'), 348, 1270)
         context.fillText(nicestr(details.comments) + ((details.comments == 1) ? ' comment' : ' comments'), 625, 1270)
@@ -285,7 +290,10 @@ export async function getDetailImage(details) {
         context.fill(p);
         p = new Path2D('M561.1,1284.3c0,1.4,1.7,2.1,2.7,1.1l6.3-6.3h31.5c2.5,0,4.5-2,4.5-4.5v-27c0-2.5-2-4.5-4.5-4.5h-36c-2.5,0-4.5,2-4.5,4.5L561.1,1284.3z M579.1,1266.1c0-1.2,1-2.3,2.3-2.3h11.3c1.2,0,2.3,1,2.3,2.3s-1,2.3-2.3,2.3h-11.3C580.1,1268.4,579.1,1267.4,579.1,1266.1z M572.4,1257.1c0-1.2,1-2.3,2.3-2.3h18c1.2,0,2.3,1,2.3,2.3s-1,2.3-2.3,2.3h-18C573.4,1259.4,572.4,1258.4,572.4,1257.1z');
         context.fill(p);
-    } else {
+        if (details.photos.length == 0) {
+            context.translate(0, -230);
+        }
+    } else if (details.bottomText) {
         context.fillText(details.bottomText, 540, 1270)
     }
     context.fillStyle = details.colors.secondary

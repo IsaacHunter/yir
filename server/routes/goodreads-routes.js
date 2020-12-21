@@ -1,10 +1,11 @@
 const router = require("express").Router();
 const passport = require("passport");
 const keys = require("../config/keys");
-const CLIENT_HOME_PAGE_URL = "http://myyearinreview.com";
+const CLIENT_HOME_PAGE_URL = keys.sites.client;
 const goodreads = require('../goodreads-api-node');
 const request = require("request")
 const fs = require('fs');
+const ObjectsToCsv = require('objects-to-csv');
 
 // when login is successful, retrieve user info
 router.get("/success", async(req, res) => {
@@ -64,6 +65,10 @@ router.get("/data", async(req, res) => {
       var page = 1
       while (end < total) {
         var promise = await gr.getBooksOnUserShelf(req.user.goodreads.id, "read", {sort:"date_read", v:"2", page:page.toString()})
+
+        var csv = new ObjectsToCsv(promise.reviews.review);
+        await csv.toDisk('./data/goodreads/'+req.user.goodreads.id+'.readbooks.page'+page.toString()+'.csv');
+
         end = parseInt(promise.reviews.end)
         total = parseInt(promise.reviews.total)
         page++
@@ -74,6 +79,12 @@ router.get("/data", async(req, res) => {
 
               var userVersionPromise = await gr.showBook(review.book.id._)
               var bestVersionPromise = await gr.showBook(userVersionPromise.book.work.best_book_id._)
+
+              csv = new ObjectsToCsv([userVersionPromise.book]);
+              await csv.toDisk('./data/goodreads/'+req.user.goodreads.id+'.userVersionBook.'+review.book.id._+'.csv');
+
+              csv = new ObjectsToCsv([bestVersionPromise.book]);
+              await csv.toDisk('./data/goodreads/'+req.user.goodreads.id+'.bestVersionBook.'+userVersionPromise.book.work.best_book_id._+'.csv');
 
               var img = ""
               if(review.book.large_image_url) {
@@ -192,7 +203,7 @@ router.get("/data", async(req, res) => {
       console.error(e);
     }
     if (feedback != "") {
-      feedback += "You can try switching editions by going to Goodreads, going to the book, clicking on All Editions and switching to a different edition"
+      feedback = feedback + "You might be able to fix it by switching editions. Go to the book's page on Goodreads, click on All Editions and switch to a different edition"
     }
 
     var favAuthor = {
@@ -206,7 +217,7 @@ router.get("/data", async(req, res) => {
     }
     
     request(favAuthor.img.replace('\n','')).pipe(fs.createWriteStream('images/author'+favAuthor.id+'.jpg'));
-    favAuthor.img = 'http://myyearinreview.com:4000/images/author'+favAuthor.id+'.jpg'
+    favAuthor.img = keys.sites.server + '/images/author'+favAuthor.id+'.jpg'
     
     var data = {
       ...req.user.goodreads

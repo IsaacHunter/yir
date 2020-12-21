@@ -121,10 +121,13 @@ export async function getGoodreadsImage(state) {
             topText: [(state.user.author.booksThisYear.length == 1) ? 'I read another book by' : 'I read another ' + state.user.author.booksThisYear.length + ' books by',
             'one of my favourite authors'],
             midText: state.user.author.name,
-            bottomText: "to go along with:",
             strava: false,
-            photos: state.user.author.previousBooks,
-            headerphotos: state.user.author.booksThisYear
+            photos: state.user.author.booksThisYear
+        }
+        if (state.user.author.previousBooks.length) {
+            detailDetails.photos = state.user.author.previousBooks
+            detailDetails.headerphotos = state.user.author.booksThisYear
+            detailDetails.bottomText = "to go along with:"
         }
         var detailImg = await getDetailImage(detailDetails)
         imgs.push(detailImg)

@@ -3,7 +3,7 @@ const passport = require("passport");
 var SpotifyWebApi = require('spotify-web-api-node');
 const { spotify } = require("../config/keys");
 const keys = require("../config/keys");
-const CLIENT_HOME_PAGE_URL = "http://myyearinreview.com";
+const CLIENT_HOME_PAGE_URL = keys.sites.client;
 
 // when login is successful, retrieve user info
 router.get("/success", async(req, res) => {

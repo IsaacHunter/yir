@@ -6,6 +6,8 @@ import { getApplepodcastsImage } from './../applepodcasts.js'
 import { getYouversionImage } from './../youversion.js'
 import { isArguments, isEqual } from 'lodash';
 
+const server = "http://myyearinreview.com:4000"//"http://localhost:4000"
+
 
 export default class HomePage extends Component {
   state = {
@@ -103,7 +105,7 @@ export default class HomePage extends Component {
     // Fetch does not send cookies. So you should add credentials: 'include'
     for (var key in this.state) {
       const thekey = key
-      fetch("http://myyearinreview.com:4000/auth/"+thekey+"/success", {
+      fetch(server+"/auth/"+thekey+"/success", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -120,7 +122,7 @@ export default class HomePage extends Component {
               authenticated: 1
             }
           });
-          fetch("http://myyearinreview.com:4000/auth/"+thekey+"/data", {
+          fetch(server+"/auth/"+thekey+"/data", {
             method: "GET",
             credentials: "include",
             headers: {
@@ -207,20 +209,9 @@ export default class HomePage extends Component {
 
                 {goodreads.authenticated && 
                   <Item state={goodreads} getImg={state => getGoodreadsImage(state)}>
-                    {/* {goodreads.user && goodreads.user.books &&
-                      <li className="list-group-item">
-                        <div className="input-group">
-                          <div className="input-group-prepend">
-                            <span className="input-group-text">Fav:</span>
-                          </div>
-                          <select className="custom-select" onChange={this.goodreadsSelectFav} value={goodreads.controls.favBook}>                  
-                            {goodreads.user.books.map(function(object, i){
-                                return <option value={i}>{object}</option>
-                            })}
-                          </select>
-                        </div>
-                      </li>
-                    } */}
+                    {goodreads.user && goodreads.user.feedback &&
+                      <li className="list-group-item"><small><span className="text-warning">Heads up:</span> {goodreads.user.feedback}</small></li>
+                    }
                   </Item>
                 }
                 <div className="col-sm">
@@ -252,7 +243,7 @@ class AppButton extends React.Component {
       // } else {
         // Authenticate using via passport api in the backend
         // Upon successful login, a cookie session will be stored in the client
-        window.open("http://myyearinreview.com:4000/auth/" + key, "_self");
+        window.open(server+"/auth/" + key, "_self");
       // }
     }
   };
@@ -318,7 +309,7 @@ class Item extends React.Component {
   _handleDisconnectClick = (event) => {
     if (event.target.value) {
       // Logout using passport api
-      window.open("http://myyearinreview.com:4000/auth/" + event.target.value + "/logout", "_self");
+      window.open(server+"/auth/" + event.target.value + "/logout", "_self");
     }
   };
 

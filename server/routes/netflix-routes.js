@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const passport = require("passport");
 const Netflix = require('netflix2')
-const { netflix } = require("../config/keys");
-const CLIENT_HOME_PAGE_URL = "http://myyearinreview.com";
+const keys = require("../config/keys");
+const CLIENT_HOME_PAGE_URL = keys.sites.client;
 const util = require('util');
 
 // Promisify the netflix2 API so that it doesn't follow the
@@ -94,12 +94,12 @@ function callback (error, result) {
 
 // auth with passport
 router.get("", async(req, res) => {
-  var netflixAPI = new Netflix()
-  // await netflixAPI.login(netflix)
-  // const profileGuid = await getProfileGuid(netflixAPI, "Is &amp; Ky")
-  // await switchProfile(netflixAPI, profileGuid)
+  var netflix = new Netflix()
+  // await netflix.login(keys.netflix)
+  // const profileGuid = await getProfileGuid(netflix, "Is &amp; Ky")
+  // await switchProfile(netflix, profileGuid)
 	// try {
-    // const results = await netflixAPI.getViewingHistory();
+    // const results = await netflix.getViewingHistory();
     
   //   const fs = require('fs');
 

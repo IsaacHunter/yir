@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
-const CLIENT_HOME_PAGE_URL = "http://myyearinreview.com";
+const keys = require("../config/keys");
+const CLIENT_HOME_PAGE_URL = keys.sites.client;
 const fetch = require('node-fetch');
 var path = require('path');
 
@@ -11,7 +12,7 @@ router.post("", passport.authenticate('local', {
 })
 );
 
-// When you visit http://myyearinreview.com/login, you will see "Login Page"
+// Login Page
 router.get('', (req, res, next) => {
   res.sendFile(path.join(__dirname + '/youversion-login.html'));
 });
