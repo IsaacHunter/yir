@@ -206,7 +206,7 @@ router.get("/data", async(req, res) => {
     }
     
     request(favAuthor.img.replace('\n','')).pipe(fs.createWriteStream('images/author'+favAuthor.id+'.jpg'));
-    favAuthor.img = 'http://myyearinreview:4000/images/author'+favAuthor.id+'.jpg'
+    favAuthor.img = 'http://myyearinreview.com:4000/images/author'+favAuthor.id+'.jpg'
     
     var data = {
       ...req.user.goodreads

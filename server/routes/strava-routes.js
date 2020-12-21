@@ -110,7 +110,7 @@ router.get("/data", async (req, res) => {
                 ...activ.photos,
                 activity_id: activ.id,
                 kudos_count: activ.kudos_count,
-                url: 'http://myyearinreview:4000/images/photo'+activ.id+'.jpg'
+                url: 'http://myyearinreview.com:4000/images/photo'+activ.id+'.jpg'
               })
             }
             if (activ.best_efforts) {
@@ -155,7 +155,7 @@ router.get("/data", async (req, res) => {
       .buffer(true).disableTLSCerts()
       
       await writeFileAsync('images/'+maxKudos.id+'.png',imgRes.body)
-      maxKudos.img = 'http://myyearinreview:4000/images/'+maxKudos.id+'.png'
+      maxKudos.img = 'http://myyearinreview.com:4000/images/'+maxKudos.id+'.png'
       maxKudos.name = activ.name
     // }
 
