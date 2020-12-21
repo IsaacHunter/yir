@@ -80,7 +80,7 @@ router.get("/data", async (req, res) => {
         await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.listActivities.page'+page+'.csv');
         page ++
         for (const activity of payload) {
-            if (activity.start_date_local.slice(0,7) === "2020-12") {
+            if (activity.start_date_local.slice(0,4) === "2020") {
                 if (!activities[activity.type]) {
                   activities[activity.type] = {
                     distance: activity.distance,
