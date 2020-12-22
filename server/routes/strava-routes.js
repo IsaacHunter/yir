@@ -8,6 +8,7 @@ const fs = require('fs');
 const superagent = require('superagent');
 const { promisify } = require('util')
 const request = require("request")
+const csv=require('csvtojson')
 
 const readFileAsync = promisify(fs.readFile)
 const writeFileAsync = promisify(fs.writeFile)
@@ -69,15 +70,21 @@ router.get("/data", async (req, res) => {
 
     var activities = {}
 
-    const athlete = await Strava.athlete.get({'access_token':req.user.strava.token});
+    // const athlete = await Strava.athlete.get({'access_token':req.user.strava.token});
+    const athlete = {
+      firstname: "Joshua",
+      lastname: "McMillan"
+    }
+    
     // var distance = 0
     // var time = 0
     // var runs = 0
     // var gain = 0
     while (loop) {
-        const payload = await Strava.athlete.listActivities({'access_token':req.user.strava.token, page: page});
-        const csv = new ObjectsToCsv(payload);
-        await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.listActivities.page'+page+'.csv');
+        // const payload = await Strava.athlete.listActivities({'access_token':req.user.strava.token, page: page});
+        const file = './data/strava/'+athlete.firstname+'.'+athlete.lastname+'.listActivities.page'+page+'.csv'
+        const payload =await csv({checkType: true}).fromFile(file);
+
         page ++
         for (const activity of payload) {
             if (activity.start_date_local.slice(0,4) === "2020") {
@@ -99,10 +106,10 @@ router.get("/data", async (req, res) => {
                 break
             }
 
-            const activ = await Strava.activities.get({'access_token':req.user.strava.token, 'id':activity.id});
-            const csv = new ObjectsToCsv([activ]);
-            await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.activitypr.'+activity.id+'.csv');
-
+            // const activ = await Strava.activities.get({'access_token':req.user.strava.token, 'id':activity.id});
+            const activarray = await csv({checkType: true}).fromFile('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.activitypr.'+activity.id+'.csv')
+            const activ = activarray[0];
+            
             if (activ.photos.count > 0) {
               request(activ.photos.primary.urls["600"]).pipe(fs.createWriteStream('images/photo'+activ.id+'.jpg'));
 
@@ -136,9 +143,10 @@ router.get("/data", async (req, res) => {
 
 
     // if (activity.start_date_local.slice(0,10) === "2020-11-13") {
-      const activ = await Strava.activities.get({'access_token':req.user.strava.token, 'id':maxKudos.id});
-      const csv = new ObjectsToCsv([activ]);
-      await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.activitykudos.'+maxKudos.id+'.csv');
+      // const activ = await Strava.activities.get({'access_token':req.user.strava.token, 'id':maxKudos.id});
+      const activarray = await csv({checkType: true}).fromFile('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.activitypr.'+maxKudos.id+'.csv')
+      const activ = activarray[0]
+
       const fetch = require('node-fetch');
       var HTMLParser = require('node-html-parser');
       var promise = await fetch("https://www.strava.com/activities/"+maxKudos.id+"/embed/"+activ.embed_token, {
