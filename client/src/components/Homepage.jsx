@@ -5,6 +5,7 @@ import { getApplemusicImage } from './../applemusic.js'
 import { getApplepodcastsImage } from './../applepodcasts.js'
 import { getYouversionImage } from './../youversion.js'
 import { isArguments, isEqual } from 'lodash';
+import { saveAs } from 'file-saver';
 
 const server = "http://myyearinreview.com:4000"//"http://localhost:4000"
 
@@ -366,6 +367,8 @@ class Item extends React.Component {
                       )}
                     </div>
                     <img alt={state.name} style={{ width: "100%" }} src={this.state.imgs[this.state.imgIndex]} onClick={this._handleNext} />
+                    <br /><br />
+                    <button type="button" class="btn btn-primary btn-lg btn-block" onClick={() => saveAs(this.state.imgs[this.state.imgIndex],state.name)}>Download</button> 
                   </div>
                 )}
               </li>

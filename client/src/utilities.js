@@ -324,6 +324,7 @@ export async function getDetailImage(details) {
     context.clip(region)
 
     if (details.photos) {
+        shuffle(details.photos)
         var totalWidth = (details.photos.length - 1)*35
         for (var photo of details.photos) {
             photo.img = await getImgFromURL(photo.url)

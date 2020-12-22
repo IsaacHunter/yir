@@ -124,7 +124,7 @@ router.get("/data", async (req, res) => {
               }
             }
 
-            if (activity.kudos_count > maxKudos.kudos) {
+            if (activity.kudos_count > maxKudos.kudos && activity.map.summary_polyline) {
               maxKudos = {
                 kudos: activity.kudos_count,
                 comments: activity.comment_count,
