@@ -7,7 +7,7 @@ import { getYouversionImage } from './../youversion.js'
 import { isArguments, isEqual } from 'lodash';
 import { saveAs } from 'file-saver';
 
-const server = "http://localhost:4000"//"http://myyearinreview.com:4000"
+const server = "http://myyearinreview.com:4000"//"http://localhost:4000"
 
 
 export default class HomePage extends Component {
