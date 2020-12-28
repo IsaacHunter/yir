@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Youversion Bible Login Form</title>
+<title>Apple Podcast Form</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -39,24 +39,21 @@
 </head>
 <body>
 <div class="login-form">
-    <form method="POST" action="/auth/youversion">
+    <form action="/auth/applepodcasts" method="post" enctype="multipart/form-data">
         <div class="login-header">
             <h4 class="text-center">Log in to your account on</h4>
-            <img class="img-fluid" src="../images/youversion.png" />
+            <img class="img-fluid" src="../images/apple-podcasts.png" />
         </div>
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" name="username" required="required">
-        </div>
+            <input type="file" name="podcast-file" />
+        </div>   
         <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" name="password" required="required">
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
-        </div>      
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </div>           
     </form>
     <p class="text-center">
         <b>Please read this</b><br/>
-        Unfortunately the only way to get a user's data from the YouVersion Bible App is to put in your username and password. I don't recommend just putting your passwords into random websites that could very well save your password. That said, I will only use your password to send it to YouVersion and get your data to generate your Year In Review. It's not saved anywhere on this website. Use at your own risk. <br />-Isaac
+        So Apple Podcasts sucks. The only way I've been able to get top podcasts is if you have the Apple Podcasts app on a Mac computer and that app is synced with any device you listen to podcasts on. Then follow these steps (it's pretty straight forward): Open Finder. At the top toolbar click Go -> Go to Folder. Type in "~/Library/Group Containers" and press Go. One of the folders should end with "apple.podcasts". Open that, then open the "Documents" folder. Then drag and drop the file called "MTLibrary.sqlite" into where it says "Choose File" above. <br />-Isaac
     </p>
 </div>
 </body>

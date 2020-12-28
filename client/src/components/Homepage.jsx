@@ -7,7 +7,7 @@ import { getYouversionImage } from './../youversion.js'
 import { isArguments, isEqual } from 'lodash';
 import { saveAs } from 'file-saver';
 
-const server = "http://myyearinreview.com:4000"//"http://localhost:4000"
+const server = "http://localhost:4000"//"http://myyearinreview.com:4000"
 
 
 export default class HomePage extends Component {
@@ -30,6 +30,23 @@ export default class HomePage extends Component {
         favBook: 0
       }
     },
+    applepodcasts: {
+      title: "Apple Podcasts",
+      enabled: true,
+      name: "applepodcasts",
+      img: "apple-podcasts.png",
+      controls: {
+        type:"Music"
+      } 
+    },
+    youversion: {
+      title: "Youversion Bible",
+      enabled: true,
+      name: "youversion",
+      img: "youversion.png",
+      controls: {
+      }
+    },
     applemusic: {
       title: "Apple Music",
       enabled: false,
@@ -38,23 +55,6 @@ export default class HomePage extends Component {
       controls: {
         type:"Music"
       } 
-    },
-    applepodcasts: {
-      title: "Apple Podcasts",
-      enabled: false,
-      name: "applepodcasts",
-      img: "apple-podcasts-disabled.png",
-      controls: {
-        type:"Music"
-      } 
-    },
-    youversion: {
-      title: "Youversion Bible",
-      enabled: false,
-      name: "youversion",
-      img: "youversion-disabled.png",
-      controls: {
-      }
     },
     // spotify: {
     //   title: "Spotify",
@@ -368,7 +368,7 @@ class Item extends React.Component {
                     </div>
                     <img alt={state.name} style={{ width: "100%" }} src={this.state.imgs[this.state.imgIndex]} onClick={this._handleNext} />
                     <br /><br />
-                    <button type="button" class="btn btn-primary btn-lg btn-block" onClick={() => saveAs(this.state.imgs[this.state.imgIndex],state.name)}>Download</button> 
+                    <button type="button" className="btn btn-primary btn-lg btn-block" onClick={() => saveAs(this.state.imgs[this.state.imgIndex],state.name)}>Download</button> 
                   </div>
                 )}
               </li>

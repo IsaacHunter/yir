@@ -4,6 +4,7 @@ const StravaStrategy = require('passport-strava-oauth2').Strategy;
 const GoodreadsStrategy = require('passport-goodreads').Strategy;
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
+const CustomStrategy = require('passport-custom').Strategy;
 const keys = require("./keys");
 const fetch = require('node-fetch');
 
@@ -144,6 +145,21 @@ passport.use(
     })
   })
 );
+
+
+passport.use('applepodcasts', new CustomStrategy(
+  function(req, done) {
+    var user = {}
+    if (req.user) {
+      user = req.user
+    }
+    user.applepodcasts = {
+      filename: req.file.filename,
+      provider: "applepodcasts"
+    }
+    return done(null, user);
+  }
+));
 
 passport.use(
   new SpotifyStrategy({

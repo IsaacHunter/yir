@@ -61,8 +61,12 @@ export async function getSummaryImage(details) {
 
     context.fillStyle = details.colors.primary
     context.font = 'bold 70px Futura'
-    context.fillText(details.title.top, 540, 586)
-    context.fillText(details.title.bottom, 540, 968)
+    for (var i in details.title.top) {
+        context.fillText(details.title.top[i], 540, 586-(84*(details.title.top.length-i-1)))
+    }
+    for (var i in details.title.bottom) {
+        context.fillText(details.title.bottom[i], 540, 968+(84*i))
+    }
 
     var moreStatsPositions = []
     switch (details.moreStats.length) {
@@ -218,7 +222,16 @@ export async function getListImage(details) {
     for (var i in details.list) {
         for (var j in details.list[i].titles) {
             context.fillStyle = details.list[i].titles[j].color
-            context.fillText(details.list[i].titles[j].text, 280 + maxWidth, yOffset + 550 + 225*i + 40*j + (170-(details.list[i].titles.length*40))/2)
+            var text = details.list[i].titles[j].text
+            var textWidth = context.measureText(text).width
+            if (textWidth > 600-maxWidth) {
+                text = text + "..."
+                while (textWidth > 600-maxWidth) {
+                    text = text.substr(0,text.length-4) + "..."
+                    var textWidth = context.measureText(text).width
+                }
+            }
+            context.fillText(text, 280 + maxWidth, yOffset + 550 + 225*i + 40*j + (170-(details.list[i].titles.length*40))/2)
         }
     }
 
@@ -296,6 +309,21 @@ export async function getDetailImage(details) {
     } else if (details.bottomText) {
         context.fillText(details.bottomText, 540, 1270)
     }
+
+    if (details.youversion) {
+        context.textAlign = 'left'
+        context.fillStyle = details.colors.primary
+        context.font = 'bold 20px Futura'
+        context.fillText("LENGTH", 218, 1414)
+        context.fillText("VERSES", 618, 1414)
+        context.fillText("COMPLETED", 218, 1518)
+        context.font = 'bold 35px Futura'
+        context.fillText(details.youversion.length, 218, 1414 + 40)
+        context.fillText(details.youversion.verses, 618, 1414 + 40)
+        context.fillText(details.youversion.completed, 218, 1518 + 40)
+        context.textAlign = 'center'
+    }
+
     context.fillStyle = details.colors.secondary
     context.font = 'bold 33px Futura'
     context.fillText(details.midText.toUpperCase(), 540, 1203)
