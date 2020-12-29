@@ -116,7 +116,7 @@ const Goodreads = function(credentials, callbackURL) {
       OAUTH.getOAuthRequestToken((error, oAuthToken, oAuthTokenSecret, results) => {
         if (error) reject(new GoodreadsApiError(error.message, 'getRequestToken()'));
 
-        const url = `${URL}/oauth/authorize?oauth_token=${oAuthToken}&oauth_callback=${OAUTH._authorize_callback}`;
+        const url = `${URL}/oauth/authorize?mobile=1&oauth_token=${oAuthToken}&oauth_callback=${OAUTH._authorize_callback}`;
         _setOAuthToken({ OAUTH_TOKEN: oAuthToken, OAUTH_TOKEN_SECRET: oAuthTokenSecret });
 
         resolve(url);
