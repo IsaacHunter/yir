@@ -141,7 +141,7 @@ const Goodreads = function(credentials, callbackURL) {
           _setAccessToken({ ACCESS_TOKEN: accessToken, ACCESS_TOKEN_SECRET: accessTokenSecret });
           OAUTHENTICATED = true;
 
-          resolve(accessToken, accessTokenSecret);
+          resolve({ ACCESS_TOKEN: accessToken, ACCESS_TOKEN_SECRET: accessTokenSecret });
         });
       } else reject(new GoodreadsApiError("No Request Token found. call getRequestToken()"));
     });

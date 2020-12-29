@@ -280,16 +280,17 @@ router.get("", (req, res) => {
   gr.getRequestToken()
   .then(url => {
     console.log("got request token, going to " + url)
-     res.redirect(url) });
+     res.redirect(url)
+    });
 })
 
 // redirect to home page after successfully login via goodreads
 router.get("/redirect", (req, res) => {
   console.log("redirected")
   gr.getAccessToken()
-    .then((token, tokenSecret) => {
-      console.log("TOKEN:" + token)
-      console.log("TOKENSECRET:" + tokenSecret)
+    .then((details) => {
+      console.log("TOKEN:" + details.ACCESS_TOKEN)
+      console.log("TOKENSECRET:" + details.ACCESS_TOKEN_SECRET)
       res.redirect(CLIENT_HOME_PAGE_URL) })
     }
   // passport.authenticate("goodreads", {
