@@ -51,7 +51,7 @@ passport.use(
   new GoodreadsStrategy({
     consumerKey: keys.goodreads.consumerKey,
     consumerSecret: keys.goodreads.consumerSecret,
-    callbackURL: "/auth/goodreads/redirect",
+    callbackURL: keys.sites.server + "/auth/goodreads/redirect",
     passReqToCallback: true
   }, function(req, token, tokenSecret, profile, done) {
     var user = {}
