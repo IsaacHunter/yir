@@ -274,13 +274,18 @@ router.get("", (req, res) => {
   //   secret: keys.goodreads.consumerSecret, 
   // };
   // const gr = goodreads(myCredentials);
+  console.log("pre init")
   gr.initOAuth(keys.sites.server + "/auth/goodreads/redirect");
+  console.log("post init")
   gr.getRequestToken()
-  .then(url => { res.redirect(url) });
+  .then(url => {
+    console.log("got request token, going to " + url)
+     res.redirect(url) });
 })
 
 // redirect to home page after successfully login via goodreads
 router.get("/redirect", (req, res) => {
+  console.log("redirected")
   gr.getAccessToken()
     .then((token, tokenSecret) => {
       console.log("TOKEN:" + token)
