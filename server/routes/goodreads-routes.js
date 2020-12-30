@@ -37,7 +37,6 @@ router.get("/data", async(req, res) => {
       OAUTH_TOKEN_SECRET: req.user.goodreads.tokenSecret,
     }
     
-    var readId
     const gr = goodreads(myCredentials);
     gr.initOAuth();
     gr._setOAuthToken(token);
@@ -265,38 +264,26 @@ router.get("/logout", (req, res) => {
 });
 
 // auth with passport
-// router.get("", passport.authenticate("goodreads", {
-//   scope: ["activity:read_all"]
-// }));
 router.get("", (req, res) => {
-  // const myCredentials = {
-  //   key: keys.goodreads.consumerKey, //req.user.token,
-  //   secret: keys.goodreads.consumerSecret, 
-  // };
-  // const gr = goodreads(myCredentials);
-  console.log("pre init")
   gr.initOAuth(keys.sites.server + "/auth/goodreads/redirect");
-  console.log("post init")
   gr.getRequestToken()
   .then(url => {
-    console.log("got request token, going to " + url)
-     res.redirect(200, url)
+     res.redirect(201, url)
     });
 })
 
 // redirect to home page after successfully login via goodreads
-router.get("/redirect", (req, res) => {
-  console.log("redirected")
-  gr.getAccessToken()
-    .then((details) => {
-      console.log("TOKEN:" + details.ACCESS_TOKEN)
-      console.log("TOKENSECRET:" + details.ACCESS_TOKEN_SECRET)
-      res.redirect(CLIENT_HOME_PAGE_URL) })
-    }
-  // passport.authenticate("goodreads", {
-  //   successRedirect: CLIENT_HOME_PAGE_URL,
-  //   failureRedirect: "/auth/goodreads/failed"
-  // })
-);
+router.get("/redirect", async (req, res, next) => {
+  var accessTokens = await gr.getAccessToken()
+  var user = await gr.getCurrentUserInfo()
+  req.goodreads = {
+    ...accessTokens,
+    id: user.user.id
+  }
+  return passport.authenticate('goodreads', {
+    successRedirect: CLIENT_HOME_PAGE_URL,
+    failureRedirect: "/auth/goodreads/failed"
+  })(req, res, next);
+  });
 
 module.exports = router;

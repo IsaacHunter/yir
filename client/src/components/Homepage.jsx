@@ -182,7 +182,7 @@ export default class HomePage extends Component {
         <main role="main">
           <section className="jumbotron text-center">
             <div className="container">
-              <h1>Year In Review</h1>
+              <h1>Your Year In Review</h1>
               <p>Hey! I'm <a href="http://instagram.com/isaachunter" target="_blank">Isaac</a>. This is a rough tool I threw together over a couple weekends so there are most likely bugs &amp; issues. Feel free to DM me any graphics that have an issue and I'll try my best to fix the algorithm. Also every time you connect an app or refresh the page, the server has to re-calculate all your stats so I would suggest connecting all your apps and then go pour yourself a coffee and hopefully it will be done calculating when you get back. :P Enjoy!</p>
             </div>
           </section>
@@ -369,6 +369,7 @@ class Item extends React.Component {
                     <img alt={state.name} style={{ width: "100%" }} src={this.state.imgs[this.state.imgIndex]} onClick={this._handleNext} />
                     <br /><br />
                     <button type="button" className="btn btn-primary btn-lg btn-block" onClick={() => saveAs(this.state.imgs[this.state.imgIndex],state.name)}>Download</button> 
+                    <span><center>or just click and hold on the image</center></span>
                   </div>
                 )}
               </li>

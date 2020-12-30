@@ -47,28 +47,44 @@ passport.use(
   })
 );
 
-passport.use(
-  new GoodreadsStrategy({
-    consumerKey: keys.goodreads.consumerKey,
-    consumerSecret: keys.goodreads.consumerSecret,
-    callbackURL: keys.sites.server + "/auth/goodreads/redirect",
-    passReqToCallback: true
-  }, function(req, token, tokenSecret, profile, done) {
+// passport.use(
+//   new GoodreadsStrategy({
+//     consumerKey: keys.goodreads.consumerKey,
+//     consumerSecret: keys.goodreads.consumerSecret,
+//     callbackURL: keys.sites.server + "/auth/goodreads/redirect",
+//     passReqToCallback: true
+//   }, function(req, token, tokenSecret, profile, done) {
+//     var user = {}
+//     if (req.user) {
+//       user = req.user
+//     } else {
+//       console.log("break")
+//     }
+//     user.goodreads = {
+//       token: token,
+//       tokenSecret: tokenSecret,
+//       id: profile.id,
+//       provider: "goodreads"
+//     }
+//     return done(null, user);
+//   })
+// );
+
+passport.use('goodreads', new CustomStrategy(
+  function(req, done) {
     var user = {}
     if (req.user) {
       user = req.user
-    } else {
-      console.log("break")
     }
     user.goodreads = {
-      token: token,
-      tokenSecret: tokenSecret,
-      id: profile.id,
+      token: req.goodreads.ACCESS_TOKEN,
+      tokenSecret: req.goodreads.ACCESS_TOKEN_SECRET,
+      id: req.goodreads.id,
       provider: "goodreads"
     }
     return done(null, user);
-  })
-);
+  }
+));
 
 passport.use(
   new LocalStrategy({
@@ -145,7 +161,6 @@ passport.use(
     })
   })
 );
-
 
 passport.use('applepodcasts', new CustomStrategy(
   function(req, done) {
