@@ -280,7 +280,7 @@ router.get("", (req, res) => {
   gr.getRequestToken()
   .then(url => {
     console.log("got request token, going to " + url)
-     res.redirect(url)
+     res.redirect(200, url)
     });
 })
 
