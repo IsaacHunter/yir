@@ -6,6 +6,7 @@ const goodreads = require('../goodreads-api-node');
 const request = require("request")
 const fs = require('fs');
 const ObjectsToCsv = require('objects-to-csv');
+const csv=require('csvtojson')
 const myCredentials = {
   key: keys.goodreads.consumerKey, //req.user.token,
   secret: keys.goodreads.consumerSecret, 
@@ -40,6 +41,8 @@ router.get("/data", async(req, res) => {
     const gr = goodreads(myCredentials);
     gr.initOAuth();
     gr._setOAuthToken(token);
+
+    req.user.goodreads.id = "127385526"
     try {
       var bookList = {
         longest: {
@@ -67,12 +70,19 @@ router.get("/data", async(req, res) => {
       var end = 0
       var total = 1
       var page = 1
-      while (end < total) {
-        var promise = await gr.getBooksOnUserShelf(req.user.goodreads.id, "read", {sort:"date_read", v:"2", page:page.toString()})
+      while (end < total && page < 3) {
+        // var promise = await gr.getBooksOnUserShelf(req.user.goodreads.id, "read", {sort:"date_read", v:"2", page:page.toString()})
 
-        var csv = new ObjectsToCsv(promise.reviews.review);
-        await csv.toDisk('./data/goodreads/'+req.user.goodreads.id+'.readbooks.page'+page.toString()+'.csv');
-
+        // var csv = new ObjectsToCsv(promise.reviews.review);
+        // await csv.toDisk('./data/goodreads/'+req.user.goodreads.id+'.readbooks.page'+page.toString()+'.csv');
+        var review = await csv({checkType: true}).fromFile('./data/goodreads/'+req.user.goodreads.id+'.readbooks.page'+page.toString()+'.csv')
+        var promise = {
+          reviews: {
+            review: review,
+            end: 0,
+            total: 1
+          }
+        }
         end = parseInt(promise.reviews.end)
         total = parseInt(promise.reviews.total)
         page++
@@ -81,14 +91,16 @@ router.get("/data", async(req, res) => {
             if (review.read_count > 0) {
               books.push(review.book.title)
 
-              var userVersionPromise = await gr.showBook(review.book.id._)
-              var bestVersionPromise = await gr.showBook(userVersionPromise.book.work.best_book_id._)
+              var userVersionBook = await csv({checkType: true}).fromFile('./data/goodreads/'+req.user.goodreads.id+'.userVersionBook.'+review.book.id._+'.csv');
+              var userVersionPromise = {book: userVersionBook[0]}
+              var bestVersionBook = await csv({checkType: true}).fromFile('./data/goodreads/'+req.user.goodreads.id+'.bestVersionBook.'+userVersionPromise.book.work.best_book_id._+'.csv');
+              var bestVersionPromise = {book: bestVersionBook[0]}
 
-              csv = new ObjectsToCsv([userVersionPromise.book]);
-              await csv.toDisk('./data/goodreads/'+req.user.goodreads.id+'.userVersionBook.'+review.book.id._+'.csv');
+              // csv = new ObjectsToCsv([userVersionPromise.book]);
+              // await csv.toDisk('./data/goodreads/'+req.user.goodreads.id+'.userVersionBook.'+review.book.id._+'.csv');
 
-              csv = new ObjectsToCsv([bestVersionPromise.book]);
-              await csv.toDisk('./data/goodreads/'+req.user.goodreads.id+'.bestVersionBook.'+userVersionPromise.book.work.best_book_id._+'.csv');
+              // csv = new ObjectsToCsv([bestVersionPromise.book]);
+              // await csv.toDisk('./data/goodreads/'+req.user.goodreads.id+'.bestVersionBook.'+userVersionPromise.book.work.best_book_id._+'.csv');
 
               var img = ""
               if(review.book.large_image_url) {

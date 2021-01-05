@@ -104,9 +104,8 @@ router.get("/data", async (req, res) => {
               activities[activity.type].count ++
           }
 
-          const activ = await Strava.activities.get({'access_token':req.user.strava.token, 'id':activity.id});
-          const csv = new ObjectsToCsv([activ]);
-          await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.activitypr.'+activity.id+'.csv');
+          const activarray = await csv({checkType: true}).fromFile('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.activitypr.'+activity.id+'.csv')
+          const activ = activarray[0]
 
           if (activ.photos.count > 0) {
             request(activ.photos.primary.urls["600"]).pipe(fs.createWriteStream('images/photo'+activ.id+'.jpg'));
