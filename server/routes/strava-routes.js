@@ -75,89 +75,91 @@ router.get("/data", async (req, res) => {
     // var runs = 0
     // var gain = 0
     while (loop) {
-        const payload = await Strava.athlete.listActivities({'access_token':req.user.strava.token, page: page});
-        const csv = new ObjectsToCsv(payload);
-        await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.listActivities.page'+page+'.csv');
-        page ++
-        for (const activity of payload) {
-            if (activity.start_date_local.slice(0,4) === "2020") {
-                if (!activities[activity.type]) {
-                  activities[activity.type] = {
-                    distance: activity.distance,
-                    time: activity.moving_time,
-                    gain: activity.total_elevation_gain,
-                    count: 1
-                  }
-                } else {
-                    activities[activity.type].distance += activity.distance
-                    activities[activity.type].time += activity.moving_time
-                    activities[activity.type].gain += activity.total_elevation_gain
-                    activities[activity.type].count ++
-                }
-            } else {
-                loop = false
-                break
+      const payload = await Strava.athlete.listActivities({'access_token':req.user.strava.token, page: page});
+      const csv = new ObjectsToCsv(payload);
+      await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.listActivities.page'+page+'.csv');
+      page ++
+      if (payload.length == 0) {
+        loop = false
+        break
+      }
+      for (const activity of payload) {
+        if (activity.start_date_local.slice(0,4) === "2020") {
+          if (!activities[activity.type]) {
+            activities[activity.type] = {
+              distance: activity.distance,
+              time: activity.moving_time,
+              gain: activity.total_elevation_gain,
+              count: 1
             }
+          } else {
+              activities[activity.type].distance += activity.distance
+              activities[activity.type].time += activity.moving_time
+              activities[activity.type].gain += activity.total_elevation_gain
+              activities[activity.type].count ++
+          }
 
-            const activ = await Strava.activities.get({'access_token':req.user.strava.token, 'id':activity.id});
-            const csv = new ObjectsToCsv([activ]);
-            await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.activitypr.'+activity.id+'.csv');
+          const activ = await Strava.activities.get({'access_token':req.user.strava.token, 'id':activity.id});
+          const csv = new ObjectsToCsv([activ]);
+          await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.activitypr.'+activity.id+'.csv');
 
-            if (activ.photos.count > 0) {
-              request(activ.photos.primary.urls["600"]).pipe(fs.createWriteStream('images/photo'+activ.id+'.jpg'));
+          if (activ.photos.count > 0) {
+            request(activ.photos.primary.urls["600"]).pipe(fs.createWriteStream('images/photo'+activ.id+'.jpg'));
 
-              photos.push({
-                ...activ.photos,
-                activity_id: activ.id,
-                kudos_count: activ.kudos_count,
-                url: keys.sites.server + '/images/photo'+activ.id+'.jpg'
-              })
-            }
-            if (activ.best_efforts) {
-              for (const effort of activ.best_efforts) {
-                if (effort.pr_rank == 1 && prs[effort.name] && prs[effort.name].time == 0) {
-                  prs[effort.name] = {
-                    "time": effort.elapsed_time,
-                    "date": effort.start_date_local
-                  }
+            photos.push({
+              ...activ.photos,
+              activity_id: activ.id,
+              kudos_count: activ.kudos_count,
+              url: keys.sites.server + '/images/photo'+activ.id+'.jpg'
+            })
+          }
+          if (activ.best_efforts) {
+            for (const effort of activ.best_efforts) {
+              if (effort.pr_rank == 1 && prs[effort.name] && prs[effort.name].time == 0) {
+                prs[effort.name] = {
+                  "time": effort.elapsed_time,
+                  "date": effort.start_date_local
                 }
               }
             }
+          }
 
-            if (activity.kudos_count > maxKudos.kudos && activity.map.summary_polyline) {
-              maxKudos = {
-                kudos: activity.kudos_count,
-                comments: activity.comment_count,
-                id: activity.id
-              }
+          if (activity.kudos_count > maxKudos.kudos && activity.map.summary_polyline) {
+            maxKudos = {
+              kudos: activity.kudos_count,
+              comments: activity.comment_count,
+              id: activity.id
             }
+          }
+        } else if (activity.start_date_local.slice(0,4) === "2012") {
+          loop = false
+          break
         }
+      }
     }
 
 
-    // if (activity.start_date_local.slice(0,10) === "2020-11-13") {
-      const activ = await Strava.activities.get({'access_token':req.user.strava.token, 'id':maxKudos.id});
-      const csv = new ObjectsToCsv([activ]);
-      await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.activitykudos.'+maxKudos.id+'.csv');
-      const fetch = require('node-fetch');
-      var HTMLParser = require('node-html-parser');
-      var promise = await fetch("https://www.strava.com/activities/"+maxKudos.id+"/embed/"+activ.embed_token, {
-        method: "GET"
-      });
-      let html = await promise.text()
-      var root = HTMLParser.parse(html)
-      const img = root.querySelector('.activity-map img')
+    const activ = await Strava.activities.get({'access_token':req.user.strava.token, 'id':maxKudos.id});
+    const csv = new ObjectsToCsv([activ]);
+    await csv.toDisk('./data/strava/'+athlete.firstname+'.'+athlete.lastname+'.activitykudos.'+maxKudos.id+'.csv');
+    const fetch = require('node-fetch');
+    var HTMLParser = require('node-html-parser');
+    var promise = await fetch("https://www.strava.com/activities/"+maxKudos.id+"/embed/"+activ.embed_token, {
+      method: "GET"
+    });
+    let html = await promise.text()
+    var root = HTMLParser.parse(html)
+    const img = root.querySelector('.activity-map img')
 
-      let imgRes = await superagent
-      .get(img.rawAttributes.src)
-      .set("Content-Type", "application/json")
-      .set("accept", "application/octet-stream")
-      .buffer(true).disableTLSCerts()
-      
-      await writeFileAsync('images/'+maxKudos.id+'.png',imgRes.body)
-      maxKudos.img = keys.sites.server + '/images/'+maxKudos.id+'.png'
-      maxKudos.name = activ.name
-    // }
+    let imgRes = await superagent
+    .get(img.rawAttributes.src)
+    .set("Content-Type", "application/json")
+    .set("accept", "application/octet-stream")
+    .buffer(true).disableTLSCerts()
+    
+    await writeFileAsync('images/'+maxKudos.id+'.png',imgRes.body)
+    maxKudos.img = keys.sites.server + '/images/'+maxKudos.id+'.png'
+    maxKudos.name = activ.name
 
     res.json({
       success: true,
