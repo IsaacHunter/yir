@@ -131,7 +131,7 @@ router.get("/data", async (req, res) => {
               id: activity.id
             }
           }
-        } else if (activity.start_date_local.slice(0,4) === "2012") {
+        } else if (activity.start_date_local.slice(0,4) === "2019") {
           loop = false
           break
         }
