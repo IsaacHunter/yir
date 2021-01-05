@@ -12,6 +12,7 @@ const goodreadsRoutes = require("./routes/goodreads-routes");
 const youversionRoutes = require("./routes/youversion-routes");
 const spotifyRoutes = require("./routes/spotify-routes");
 const netflixRoutes = require("./routes/netflix-routes");
+const applepodcastsRoutes = require("./routes/applepodcasts-routes");
 
 // const mongoose = require("mongoose");
 const keys = require("./config/keys");
@@ -60,6 +61,7 @@ app.use("/auth/goodreads", goodreadsRoutes);
 app.use("/auth/youversion", youversionRoutes);
 app.use("/auth/spotify", spotifyRoutes);
 app.use("/auth/netflix", netflixRoutes);
+app.use("/auth/applepodcasts", applepodcastsRoutes);
 
 // connect react to nodejs express server
 app.listen(port, () => console.log(`Server is running on port ${port}!`));

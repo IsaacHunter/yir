@@ -30,6 +30,23 @@ export default class HomePage extends Component {
         favBook: 0
       }
     },
+    applepodcasts: {
+      title: "Apple Podcasts",
+      enabled: true,
+      name: "applepodcasts",
+      img: "apple-podcasts.png",
+      controls: {
+        type:"Music"
+      } 
+    },
+    youversion: {
+      title: "Youversion Bible",
+      enabled: true,
+      name: "youversion",
+      img: "youversion.png",
+      controls: {
+      }
+    },
     applemusic: {
       title: "Apple Music",
       enabled: false,
@@ -38,23 +55,6 @@ export default class HomePage extends Component {
       controls: {
         type:"Music"
       } 
-    },
-    applepodcasts: {
-      title: "Apple Podcasts",
-      enabled: false,
-      name: "applepodcasts",
-      img: "apple-podcasts-disabled.png",
-      controls: {
-        type:"Music"
-      } 
-    },
-    youversion: {
-      title: "Youversion Bible",
-      enabled: false,
-      name: "youversion",
-      img: "youversion-disabled.png",
-      controls: {
-      }
     },
     // spotify: {
     //   title: "Spotify",
@@ -182,7 +182,7 @@ export default class HomePage extends Component {
         <main role="main">
           <section className="jumbotron text-center">
             <div className="container">
-              <h1>Year In Review</h1>
+              <h1>Your Year In Review</h1>
               <p>Hey! I'm <a href="http://instagram.com/isaachunter" target="_blank">Isaac</a>. This is a rough tool I threw together over a couple weekends so there are most likely bugs &amp; issues. Feel free to DM me any graphics that have an issue and I'll try my best to fix the algorithm. Also every time you connect an app or refresh the page, the server has to re-calculate all your stats so I would suggest connecting all your apps and then go pour yourself a coffee and hopefully it will be done calculating when you get back. :P Enjoy!</p>
             </div>
           </section>
@@ -368,7 +368,8 @@ class Item extends React.Component {
                     </div>
                     <img alt={state.name} style={{ width: "100%" }} src={this.state.imgs[this.state.imgIndex]} onClick={this._handleNext} />
                     <br /><br />
-                    <button type="button" class="btn btn-primary btn-lg btn-block" onClick={() => saveAs(this.state.imgs[this.state.imgIndex],state.name)}>Download</button> 
+                    <button type="button" className="btn btn-primary btn-lg btn-block" onClick={() => saveAs(this.state.imgs[this.state.imgIndex],state.name)}>Download</button> 
+                    <span><center>or just click and hold on the image</center></span>
                   </div>
                 )}
               </li>

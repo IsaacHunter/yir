@@ -4,6 +4,7 @@ const StravaStrategy = require('passport-strava-oauth2').Strategy;
 const GoodreadsStrategy = require('passport-goodreads').Strategy;
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
+const CustomStrategy = require('passport-custom').Strategy;
 const keys = require("./keys");
 const fetch = require('node-fetch');
 
@@ -46,28 +47,44 @@ passport.use(
   })
 );
 
-passport.use(
-  new GoodreadsStrategy({
-    consumerKey: keys.goodreads.consumerKey,
-    consumerSecret: keys.goodreads.consumerSecret,
-    callbackURL: "/auth/goodreads/redirect",
-    passReqToCallback: true
-  }, function(req, token, tokenSecret, profile, done) {
+// passport.use(
+//   new GoodreadsStrategy({
+//     consumerKey: keys.goodreads.consumerKey,
+//     consumerSecret: keys.goodreads.consumerSecret,
+//     callbackURL: keys.sites.server + "/auth/goodreads/redirect",
+//     passReqToCallback: true
+//   }, function(req, token, tokenSecret, profile, done) {
+//     var user = {}
+//     if (req.user) {
+//       user = req.user
+//     } else {
+//       console.log("break")
+//     }
+//     user.goodreads = {
+//       token: token,
+//       tokenSecret: tokenSecret,
+//       id: profile.id,
+//       provider: "goodreads"
+//     }
+//     return done(null, user);
+//   })
+// );
+
+passport.use('goodreads', new CustomStrategy(
+  function(req, done) {
     var user = {}
     if (req.user) {
       user = req.user
-    } else {
-      console.log("break")
     }
     user.goodreads = {
-      token: token,
-      tokenSecret: tokenSecret,
-      id: profile.id,
+      token: req.goodreads.ACCESS_TOKEN,
+      tokenSecret: req.goodreads.ACCESS_TOKEN_SECRET,
+      id: req.goodreads.id,
       provider: "goodreads"
     }
     return done(null, user);
-  })
-);
+  }
+));
 
 passport.use(
   new LocalStrategy({
@@ -144,6 +161,20 @@ passport.use(
     })
   })
 );
+
+passport.use('applepodcasts', new CustomStrategy(
+  function(req, done) {
+    var user = {}
+    if (req.user) {
+      user = req.user
+    }
+    user.applepodcasts = {
+      filename: req.file.filename,
+      provider: "applepodcasts"
+    }
+    return done(null, user);
+  }
+));
 
 passport.use(
   new SpotifyStrategy({
