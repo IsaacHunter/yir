@@ -268,7 +268,7 @@ router.get("", (req, res) => {
   gr.initOAuth(keys.sites.server + "/auth/goodreads/redirect");
   gr.getRequestToken()
   .then(url => {
-     res.redirect(201, url)
+     res.redirect(200, url)
     });
 })
 
