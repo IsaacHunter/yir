@@ -84,7 +84,7 @@ router.get("/data", async (req, res) => {
         break
       }
       for (const activity of payload) {
-        if (activity.start_date_local.slice(0,4) === "2020") {
+        if (activity.start_date_local.slice(0,4) === "2021") {
           if (!activities[activity.type]) {
             activities[activity.type] = {
               distance: activity.distance,
@@ -131,7 +131,7 @@ router.get("/data", async (req, res) => {
               id: activity.id
             }
           }
-        } else if (activity.start_date_local.slice(0,4) === "2019") {
+        } else if (activity.start_date_local.slice(0,4) === "2020") {
           loop = false
           break
         }

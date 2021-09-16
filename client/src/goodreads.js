@@ -18,7 +18,7 @@ export async function getGoodreadsImage(state) {
     var sumDetails = {
         ...details,
         title: {
-            top: ["In 2020 I read"],
+            top: ["In 2021 I read"],
             middle: nicestr(state.user.books.length),
             bottom: ["books"],
         },

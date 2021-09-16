@@ -84,7 +84,7 @@ if (req.user && req.user.youversion) {
     nextPage = plansData.next_page
     
     for (const plan of plansData.data) {
-      if (plan.completed_dt.slice(0,4) == "2020") {
+      if (plan.completed_dt.slice(0,4) == "2021") {
         var planPromise = await fetch("https://nodejs.bible.com/api_auth/reading-plans/view/3.1?id="+plan.plan_id+"&language_tag=en", {
           method: "GET",
           headers: {

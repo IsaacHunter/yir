@@ -161,7 +161,7 @@ router.get("", async(req, res) => {
         monthSeries = {}
       }
 
-      if (result.dateStr.slice(0,4) != "2020") {
+      if (result.dateStr.slice(0,4) != "2021") {
         break;
       }
       if (!series[result.seriesTitle]) {

@@ -16,11 +16,11 @@ router.get("/applemusic/success", async(req, res) => {
 });
 
 router.get("/applemusic/data", async(req, res) => {
-  fetch("https://amp-api.music.apple.com/v1/me/music-summaries/year-2020?views=top-artists%2Ctop-albums%2Ctop-songs&include[music-summaries]=playlist&include[playlists]=tracks&includeOnly=playlist%2Ctracks%2Csong%2Cartist%2Calbum", {
+  fetch("https://amp-api.music.apple.com/v1/me/music-summaries/year-2021?views=top-artists%2Ctop-albums%2Ctop-songs&include[music-summaries]=playlist&include[playlists]=tracks&includeOnly=playlist%2Ctracks%2Csong%2Cartist%2Calbum", {
     method: "GET",
     headers: {
-      "authorization":"Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldlYlBsYXlLaWQifQ.eyJpc3MiOiJBTVBXZWJQbGF5IiwiaWF0IjoxNjAxOTQxODc4LCJleHAiOjE2MTc0OTM4Nzh9.WsDseiyIpJa-S6c9IuFP311oYnT9jeYfJiVbyJTP11AQLeMrq0lkhz6Z1joAou2SViN-cjH3NK5Ae6vG1M4RfQ",
-      "media-user-token":"AhHShJTpAxPPlg3HaBnisvvy62npeOyTkXpHjITsA+iq+OSnZgKsAeF0vaaEbE0eU3MxdXBxMOg4ePLBQWEF5UN7Nxgvy9H3JOi3NROKK2+N+d20Sr1GekQJnD43NPzmKILbXkkbYPfWTvIpMd4ArKz0RVTOOyMjovpoKngTq0QeoEuMiL8+M9S13xs5JBxEtslSnMuqzdhcs9WPcsryqvYnTOOdACFbeMRN4+G15AnTZmMFIw=="
+      "authorization":"Bearer [xxxxxx]",
+      "media-user-token":"[xxxxxx]"
     }
   })
   .then(res => res.json())
@@ -54,8 +54,8 @@ router.get("/applemusic/data", async(req, res) => {
 //     var promise = await fetch("https://amp-api.podcasts.apple.com" + next, {
 //       method: "GET",
 //       headers: {
-//         "authorization":"Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IldlYlBsYXlLaWQifQ.eyJpc3MiOiJBTVBXZWJQbGF5IiwiaWF0IjoxNjAxOTQxODc4LCJleHAiOjE2MTc0OTM4Nzh9.WsDseiyIpJa-S6c9IuFP311oYnT9jeYfJiVbyJTP11AQLeMrq0lkhz6Z1joAou2SViN-cjH3NK5Ae6vG1M4RfQ",
-//         "media-user-token":"AhHShJTpAxPPlg3HaBnisvvy62npeOyTkXpHjITsA+iq+OSnZgKsAeF0vaaEbE0eU3MxdXBxMOg4ePLBQWEF5UN7Nxgvy9H3JOi3NROKK2+N+d20Sr1GekQJnD43NPzmKILbXkkbYPfWTvIpMd4ArKz0RVTOOyMjovpoKngTq0QeoEuMiL8+M9S13xs5JBxEtslSnMuqzdhcs9WPcsryqvYnTOOdACFbeMRN4+G15AnTZmMFIw=="
+//         "authorization":"Bearer [xxxxxx]",
+//         "media-user-token":"[xxxxxx]"
 //       }
 //     });
 //     let data = await promise.json()

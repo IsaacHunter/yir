@@ -77,7 +77,7 @@ router.get("/data", async(req, res) => {
         total = parseInt(promise.reviews.total)
         page++
         for (const review of promise.reviews.review) {
-          if ((review.read_at && review.read_at.slice(review.read_at.length - 4,review.read_at.length) == 2020) || (review.read_at == "" && review.date_added && review.date_added.slice(review.date_added.length - 4,review.date_added.length) == 2020))  {
+          if ((review.read_at && review.read_at.slice(review.read_at.length - 4,review.read_at.length) == 2021) || (review.read_at == "" && review.date_added && review.date_added.slice(review.date_added.length - 4,review.date_added.length) == 2021))  {
             if (review.read_count > 0) {
               books.push(review.book.title)
 

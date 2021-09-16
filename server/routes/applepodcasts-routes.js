@@ -62,12 +62,12 @@ router.get("/data", async(req, res) => {
               ZDURATION as duration
               FROM ZMTEPISODE
               WHERE ZPLAYSTATEMANUALLYSET = 0 AND
-              ZLASTDATEPLAYED > 599529600
+              ZLASTDATEPLAYED > 631065600
               ORDER BY ZLASTDATEPLAYED DESC`)
     
     podStats.count = results.length
     for (var pod of results) {
-      if (pod.lastDatePlayed > 599529600) {
+      if (pod.lastDatePlayed > 631065600) {
         if (!pods[pod.id]) {
           pods[pod.id] = {
             duration: 0,

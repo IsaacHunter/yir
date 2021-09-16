@@ -18,7 +18,7 @@ export async function getYouversionImage(state) {
     var sumDetails = {
         ...details,
         title: {
-            top: ["In 2020 I spent"],
+            top: ["In 2021 I spent"],
             middle: nicestr(state.user.streakData.this_year),
             bottom: ["days in the","bible app"],
         },

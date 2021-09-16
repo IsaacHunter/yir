@@ -21,7 +21,7 @@ export async function getApplepodcastsImage(state) {
     var sumDetails = {
         ...details,
         title: {
-            top: ["In 2020 I", "listened to"],
+            top: ["In 2021 I", "listened to"],
             middle: nicestr(state.user.podStats.count),
             bottom: ["podcast", "episodes"],
         },

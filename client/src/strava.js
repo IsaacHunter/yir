@@ -22,7 +22,7 @@ export async function getStravaImage(state) {
     var sumDetails = {
         ...details,
         title: {
-            top: ["In 2020 I ran"],
+            top: ["In 2021 I ran"],
             middle: nicestr(state.user.activities["Run"].distance/1000),
             bottom: ["kilometers"],
         },
